@@ -124,7 +124,7 @@ export default function FileUploader() {
 
                 {isProcessing && (
                     <div className="space-y-2">
-                        <Progress value={progress} />
+                        <Progress />
                         <p className="text-sm text-gray-600 text-center">
                             Processing files... This may take a few minutes.
                         </p>
