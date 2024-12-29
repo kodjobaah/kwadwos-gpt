@@ -1,27 +1,26 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { DataAPIClient } from '@datastax/astra-db-ts'; // Install via `npm install @datastax/astra-db-ts`
-import { generateEmbedding, generateEmbeddingPipeline } from '@/lib/util/documents/helpers';
-import { EsmModel } from '@huggingface/transformers';
 import { AstraDocument, AstraDocumentData } from '@/lib/model/astra';
+import { DataAPIClient } from '@datastax/astra-db-ts'; // Install via `npm install @datastax/astra-db-ts`
+import { NextRequest, NextResponse } from 'next/server';
 
 // Initialize the Astra DB client
-const client = new DataAPIClient( process.env.ASTRA_DB_APPLICATION_TOKEN!,{
+const client = new DataAPIClient(process.env.ASTRA_DB_APPLICATION_TOKEN!, {
     dbOptions: {
-      monitorCommands: true,
-    },});
+        monitorCommands: true,
+    },
+});
 
 client.on('commandStarted', (event) => {
     console.log(`Running command ${event.commandName}`);
-  });
-  
-  client.on('commandSucceeded', (event) => {
+});
+
+client.on('commandSucceeded', (event) => {
     console.log(`Command ${JSON.stringify(event)} ${event.commandName} succeeded in ${event.duration}ms`);
-  });
-  
-  client.on('commandFailed', (event) => {
+});
+
+client.on('commandFailed', (event) => {
     console.error(`Command ${event.commandName} failed w/ error ${event.error}`);
-  });
-  const astraClient = client.db(process.env.ASTRA_DB_ENDPOINT!);
+});
+const astraClient = client.db(process.env.ASTRA_DB_ENDPOINT!);
 
 interface SearchRequestBody {
     query: string;
@@ -51,12 +50,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
         const docs: AstraDocumentData[] = [];
         for await (const doc of cursor) {
-            
+
             docs.push({
-                    id: doc._id.toString(),
-                    filename: doc.filename,
-                    text: doc.text,
-                    similarity: doc.$similarity, 
+                id: doc._id.toString(),
+                filename: doc.filename,
+                text: doc.text,
+                similarity: doc.$similarity,
             });
         }
 
