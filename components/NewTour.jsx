@@ -3,7 +3,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import TourInfo from "./TourInfo";
-import { createNewTour, generateTourResponse, getExistingTour } from "@/util/action";
+import { createNewTour, generateTourResponse, getExistingTour } from "@/lib/util/action";
 import toast from "react-hot-toast";
 
 const NewTour = () => {
