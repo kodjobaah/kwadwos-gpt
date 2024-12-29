@@ -6,6 +6,8 @@ const links = [
     { href: '/tours', label: 'tours' },
     { href: '/tours/new-tour', label: 'new tour' },
     { href: '/profile', label: 'profile' },
+    { href: '/documents', label: 'Document Search - Basic (RAG)' },
+
 ]
 const NavLinks = () => {
     return (

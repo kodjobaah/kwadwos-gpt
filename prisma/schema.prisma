@@ -27,3 +27,13 @@ model Tour {
   stops Json
   @@unique([city, country])
 }
+
+model RagSearchResults {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  answer Json
+  prompt Json
+  astraDoc String @default("documentskodjobaah")
+
+}

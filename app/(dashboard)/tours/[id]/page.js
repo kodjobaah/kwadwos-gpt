@@ -1,6 +1,6 @@
 import TourInfo from '@/components/TourInfo';
-import { generateTourImage } from '@/utils/action';
-import prisma from '@/utils/db';
+import { generateTourImage } from '@/util/action';
+import prisma from '@/util/db';
 import Link from 'next/link';
 import Image from 'next/image';
 import axios from 'axios';

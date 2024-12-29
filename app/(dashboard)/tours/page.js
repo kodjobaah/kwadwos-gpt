@@ -1,5 +1,5 @@
 import ToursPage from "@/components/ToursPage";
-import { getAllTours } from "@/utils/action";
+import { getAllTours } from "@/lib/util/action";
 
 import {
     dehydrate,
