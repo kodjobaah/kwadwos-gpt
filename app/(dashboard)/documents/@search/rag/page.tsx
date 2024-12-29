@@ -1,53 +1,26 @@
 'use client'
-import { updateQuestionAndAnswers } from "@/lib/llm/question-and-answer";
-import { QuestionAndAnswerResponse, UpdateQuestionAndAnswer } from "@/lib/model/types";
+import { QuestionAndAnswerResponse } from "@/lib/model/types";
 import { fetchRagResults } from "@/lib/prisma";
-import { useMutation } from "@tanstack/react-query";
-import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-
-
-
 
 export default function RagResultsPage() {
   const [ragSearchResults, setRagSearchResults] = useState<QuestionAndAnswerResponse[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const searchParams = useSearchParams();
-  console.log("user-params:", searchParams)
-  const astraDoc = searchParams.get('astraDoc');
-  console.log("astr-docs", astraDoc)
 
-  const questionAndAnswerMutate= useMutation({
-      mutationFn: async (up: UpdateQuestionAndAnswer) => {
-          console.log("update-question-and-answers")
-          const res = await fetch(`/api/db/astra?astraDoc=${up.astraDoc}&currentPage=${up.currentPage}`, {
-            method: 'GET',
-          });
-         
-          const data = await res.json() as unknown as QuestionAndAnswerResponse[];
 
-          data.map((d) =>{
-            console.log(d);
-          })
-
-        
-        console.log("New Resonse:",(typeof ragSearchResults));
-        if (!data || data.length === 0) {
-          setHasMore(false);
-        } else {
-          setRagSearchResults(data);
-        }
-      
-        return data;
-      }
-  });
+  let astraDoc:string
+  console.log("outside-astr-docs", astraDoc)
 
   useEffect(() => {
     // Fetch data when the component mounts or the page changes
 
-
+    const searchParams = new URLSearchParams(document.location.search);
+    console.log("user-params:", searchParams);
+  
+    astraDoc = searchParams.get('astraDoc');
+    console.log("user-effect-astr-docs", astraDoc)
     const fetchData = async () => {
       setIsLoading(true);
       try {
@@ -88,6 +61,7 @@ export default function RagResultsPage() {
 
   return (
     <div className="overflow-x-auto">
+      <h1>Rag Search Results</h1>
       <table className="table">
         {/* head */}
         <thead>
