@@ -1,9 +1,8 @@
 import TourInfo from '@/components/TourInfo';
-import { generateTourImage } from '@/util/action';
-import prisma from '@/util/db';
-import Link from 'next/link';
-import Image from 'next/image';
+import prisma from '@/lib/db';
 import axios from 'axios';
+import Image from 'next/image';
+import Link from 'next/link';
 const url = `https://api.unsplash.com/search/photos?client_id=${process.env.UNSPLASH_API_KEY}&query=`;
 
 import { redirect } from 'next/navigation';
