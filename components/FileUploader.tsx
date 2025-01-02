@@ -21,7 +21,8 @@ export default function FileUploader() {
             return (
                 fileType === 'application/pdf' ||
                 fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
-                fileType === 'application/msword'
+                fileType === 'application/msword' ||
+                fileType === 'text/csv'
             );
         });
 
@@ -76,7 +77,7 @@ export default function FileUploader() {
                     <input
                         type="file"
                         multiple
-                        accept=".pdf,.doc,.docx"
+                        accept=".pdf,.csv"
                         onChange={handleFileSelect}
                         className="block w-full text-sm text-gray-500
                         file:mr-4 file:py-2 file:px-4

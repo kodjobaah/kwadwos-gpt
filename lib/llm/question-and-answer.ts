@@ -1,4 +1,4 @@
-'use server';
+import 'server-only';
 
 import { UpdateQuestionAndAnswer } from "../model/types";
 import { fetchRagResults } from "../prisma";

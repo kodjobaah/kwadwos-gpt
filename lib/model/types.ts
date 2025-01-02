@@ -25,6 +25,14 @@ export const questionAndAnswerResultSchema = z.object({
 
 export type questionAndAnswerResult = z.infer<typeof questionAndAnswerResultSchema>
 
+export const promptSchema = z.object({
+    content: z.string(),
+    role: z.string(),
+    
+});
+
+export type Prompt = z.infer<typeof promptSchema>;
+
 export const promptDetailsSchema = z.object({
     prompt: z.string(),
 });
@@ -37,6 +45,32 @@ export const questionAndAnswerResponseSchema = z.object({
     update: z.date(),
 })
 
+export const languageModelUsageSchema = z.object({
+        /**
+      The number of tokens used in the prompt.
+         */
+        promptTokens: z.number(),
+        /**
+      The number of tokens used in the completion.
+       */
+        completionTokens: z.number(),
+        /**
+      The total number of tokens used (promptTokens + completionTokens).
+         */
+        totalTokens: z.number(),
+
+})
+export type LanguageModelUsage = z.infer<typeof languageModelUsageSchema>; 
+
+export const groqResponseSchema = z.object({
+    content: z.string(),
+    usage: languageModelUsageSchema,
+}
+)
+
+export type GroqResponse = z.infer<typeof groqResponseSchema>
+
+
 export type QuestionAndAnswerResponse = z.infer<typeof questionAndAnswerResponseSchema>
 
 
@@ -46,3 +80,5 @@ export interface UpdateQuestionAndAnswer {
   currentPage: number;
   astraDoc: string;
 }
+
+

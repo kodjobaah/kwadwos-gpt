@@ -1,13 +1,20 @@
-'use server';
+import 'server-only';
 
-import { auth, currentUser } from '@clerk/nextjs/server'
-import { pipeline, env } from "@huggingface/transformers";
+import { currentUser } from '@clerk/nextjs/server';
+import { env, pipeline } from "@huggingface/transformers";
 import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf';
-import { Pi } from 'lucide-react';
+import Papa from 'papaparse';
+import { createAndStoreChunks } from '../astradb';
+import { Collection, SomeDoc } from '@datastax/astra-db-ts';
+import fs from 'fs';
 
-    
+
+export function arrayBufferToBlob(arrayBuffer, mimeType = "application/octet-stream") {
+    return new Blob([arrayBuffer], { type: mimeType });
+}
+
 export async function getLoggedInUser() {
-    
+
     return await currentUser();
 }
 
@@ -39,7 +46,7 @@ class PipelineSingleton {
 
     static async getInstance(progress_callback = null) {
         if (this.instance === null) {
-            this.instance =  await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2', {
+            this.instance = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2', {
 
                 progress_callback,
             });
@@ -116,6 +123,42 @@ export async function extractTextFromPDF(pdfBuffer: Blob): Promise<string> {
     }
 }
 
+export async function extractDataFromCSV(file: File, collection: Collection<SomeDoc>) {
+
+    console.log(file)
+    const output = [];
+    const fileStream = await file.text();
+
+    return new Promise((resolve, reject) => {
+        Papa.parse(fileStream, {
+            header: true,
+            skipEmptyLines: true,
+            chunk: async (results) => {
+
+                const chunk = results.data
+                const text = chunk.reduce((acc, obj) => {
+                    return acc + '\n' + Object.values(obj).join('\n');
+                }, '');
+                console.log('before chunk')
+                const chunksResult = await createAndStoreChunks(text as string, file, collection)
+                console.log("after chuck")
+                output.push(...chunksResult);
+
+            },
+            complete: () => {
+                resolve(output);
+            },
+            error: (error) => {
+                reject(error)
+            },
+            beforeFirstChunk: (chunk) => {
+                // Count total rows (approximate for large files)
+                const lines = chunk.split('\n').length;
+                console.log("extractDataFromCsv-length:", lines)
+            },
+        });
+    });
+}
 
 
 

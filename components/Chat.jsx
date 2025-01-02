@@ -1,6 +1,5 @@
 'use client';
 
-import { generateChatResponse } from "@/lib/util/action";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -9,8 +8,19 @@ const Chat = () => {
     const [text, setText] = useState('');
     const [messages, setMessages] = useState([]);
 
-    const {mutate, isPending} = useMutation({
-        mutationFn: (query) => generateChatResponse([...messages, query]),
+    const chatMutation = useMutation({
+        mutationFn: async (query) => {
+
+           const resp = await fetch('/api/chat',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify([...messages, query]),
+            });
+            const output = await resp.json();
+            return output;
+        },
         onSuccess: (data) => {
             if(data.error) {
                 setMessages((prevEntries) => prevEntries.slice(0, -1));
@@ -19,13 +29,16 @@ const Chat = () => {
             }
             setMessages((prev) => [...prev, data]);
 
+        },
+        onError: (error) => {
+            console.log(error)
         }
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const query = { role : 'user', content: text};
-        mutate(query);
+        chatMutation.mutate(query);
         setMessages((prev) => [...prev, query]);
         setText('');
     }
@@ -48,7 +61,7 @@ const Chat = () => {
                     </div>
                 );
               })}
-              {isPending && <span className="loading"></span>}
+              {chatMutation.isPending && <span className="loading"></span>}
             </div>
             <form onSubmit={handleSubmit} className="max-w-4xl pt-12">
 
@@ -62,9 +75,9 @@ const Chat = () => {
                         onChange={(e) => setText(e.target.value)} />
                     <button type='submit' 
                     className='btn btn-primary join-item'
-                    disabled={isPending}
+                    disabled={chatMutation.isPending}
                     >
-                        {isPending? 'Please wait..': 'Ask Question'}
+                        {chatMutation.isPending? 'Please wait..': 'Ask Question'}
                     </button>
                 </div>
             </form>

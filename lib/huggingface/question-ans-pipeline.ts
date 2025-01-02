@@ -1,3 +1,4 @@
+import 'server-only'
 import { pipeline, PipelineType } from "@huggingface/transformers";
 
 export class QuestionAnswerPipelineSingleton {
