@@ -1,3 +1,4 @@
+import { createVectorSearchParams } from '@/lib/llm/agent/vercel';
 import { AstraDocument, AstraDocumentData } from '@/lib/model/astra';
 import { DataAPIClient } from '@datastax/astra-db-ts'; // Install via `npm install @datastax/astra-db-ts`
 import { NextRequest, NextResponse } from 'next/server';
@@ -42,8 +43,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         // Get the collection
         const collection = astraClient.collection(collectionName);
         // const embeddings = await generateEmbedding(query);
+        const prompt = await createVectorSearchParams(query)
         const cursor = collection.find({}, {
-            sort: { $vectorize: query },
+            sort: { $vectorize: prompt.content },
             limit: 10,
             includeSimilarity: true,
         });

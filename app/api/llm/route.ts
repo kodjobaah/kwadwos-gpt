@@ -1,7 +1,10 @@
 import prisma from '@/lib/db';
 import { QuestionAnswerPipelineSingleton } from '@/lib/huggingface/question-ans-pipeline';
+import { performRagSearch } from '@/lib/llm/agent/vercel';
 import { LLMRequestBody } from '@/lib/model/types';
 import { NextRequest, NextResponse } from 'next/server';
+import markdownit from 'markdown-it'
+
 
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
@@ -18,28 +21,32 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         }
         const pipelineContext = `you are a help assistant. That will answer any question put to you 
         
-        to you best of abilities. If it is possible use the following to help in formulating your answer 
+        to you best of abilities. 
+    
+        Please use the information provided below to assist you, if it is helpful
+
+        ${data.join(' ')}
         
-        """${data.join()}""""
         `
-        console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -start");
-        console.log(JSON.stringify(pipelineContext))
-        const answerer = await QuestionAnswerPipelineSingleton.getInstance();
-        const results = await answerer(prompt, pipelineContext);
-        console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -before answer");
-        console.log(results)
 
-        console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -end");
-        // Validate input
+        const result = await performRagSearch(prompt, pipelineContext);
 
-        await prisma.ragSearchResults.create({
+        // Enable everything
+        const md = markdownit({
+            html: true,
+            linkify: true,
+            typographer: true,
+        });
+
+        const out = await prisma.ragSearchResults.create({
             data: {
-                answer: results,
-                prompt: {prompt},
+                answer: md.render(result.content),
+                prompt: { prompt },
                 astraDoc: selectedDoc
             }
         });
-        return NextResponse.json(results);
+
+        return NextResponse.json({ id: out.id, ...result });
     } catch (error: any) {
         console.error('Error performing search:', error);
 
@@ -52,3 +59,4 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         );
     }
 }
+

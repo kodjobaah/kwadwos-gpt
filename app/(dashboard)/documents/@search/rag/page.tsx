@@ -1,11 +1,16 @@
 'use client'
+import Editor from "@/components/editor/Jodit";
 import { QuestionAndAnswerResponse } from "@/lib/model/types";
-import { fetchRagResults } from "@/lib/prisma";
-import { useEffect, useState } from "react";
+import { fetchRagResult, fetchRagResults } from "@/lib/prisma";
+import { useEffect, useState, useMemo } from "react";
+
+
+
 
 export default function RagResultsPage() {
   const [ragSearchResults, setRagSearchResults] = useState<QuestionAndAnswerResponse[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [documentContent, setDocumentContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
@@ -32,6 +37,10 @@ export default function RagResultsPage() {
           console.log('updd', (typeof res));
           setRagSearchResults(res);
         }
+
+        const r = await fetchRagResult(searchParams.get("id"));
+        console.log("response from database:", JSON.stringify(r))
+        setDocumentContent(r.questionAndAnswer.answer);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -60,47 +69,12 @@ export default function RagResultsPage() {
   
 
   return (
-    <div className="overflow-x-auto">
-      <h1>Rag Search Results</h1>
-      <table className="table">
-        {/* head */}
-        <thead>
-          <tr>
-            <th>Answer</th>
-          </tr>
-        </thead>
-        <tbody>
-          {ragSearchResults && ragSearchResults.map((rag, index) => (
-            <tr key={index}>
-              <td>
-                <table className="table">
-                  <thead>
-                    <tr>
-                    <th>Time</th>
-                      <th>Score</th>
-                      <th>Answer</th>
-            <th>Prompt</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                    <td>{rag.update.toISOString()}</td>
-                      <td>{rag.questionAndAnswer.score}</td>
-                      <td>
-                        <textarea value={rag.questionAndAnswer.answer} readOnly  
-                        className="peer h-full min-h-[100px] w-full resize-none rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-purple-500 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50" 
-                        />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-              <td>{rag.prompt.prompt}</td>
-              
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="">
+      <div className="border-rose-600 border-10">
+
+    <Editor doc={documentContent}/>
+      </div>
+   
       <div className="flex justify-between mt-4">
   <button
     type="button" // Explicitly set the button type to prevent default submission

@@ -49,6 +49,7 @@ export default function DocumentSearch() {
 
             const params = {
                 astraDoc: selectedDoc,
+                id: resp.id,
             };
 
 
@@ -130,6 +131,7 @@ export default function DocumentSearch() {
 
 
     return (
+        
         <div className="flex-grow">
             {/* Document Selection */}
 

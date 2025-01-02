@@ -7,6 +7,7 @@ interface ParallelLayoutProps {
 
 export default function Layout({ children, search, upload }: ParallelLayoutProps) {
     return (
+        <>
         <div className="flex flex-row h-screen overflow-hidden">
             {/* Left Panel */}
             <div className="card bg-base-300 rounded-box flex-grow p-4 overflow-auto">
@@ -25,5 +26,8 @@ export default function Layout({ children, search, upload }: ParallelLayoutProps
                 </div>
             </div>
         </div>
+        <script src="https://cdn.ckbox.io/ckbox/2.6.1/ckbox.js" ></script>
+
+        </>
     );
 }

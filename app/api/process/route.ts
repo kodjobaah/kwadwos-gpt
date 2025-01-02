@@ -1,5 +1,5 @@
-import { arrayBufferToBlob, createAndStoreChunks, ensureCollection } from "@/lib/astradb";
-import { extractTextFromPDF, getLoggedInUserEmailPrefix } from "@/lib/documents/helpers";
+import { createAndStoreChunks, ensureCollection } from "@/lib/astradb";
+import { arrayBufferToBlob, extractDataFromCSV, extractTextFromPDF, getLoggedInUserEmailPrefix } from "@/lib/documents/helpers";
 import { NextResponse } from "next/server";
 
 
@@ -27,14 +27,20 @@ export async function POST(req: Request) {
         for (const file of files) {
             let text: string;
 
+            let chunksResult;
             // Handle file based on type
             if (file.type === 'application/pdf') {
                 const arrayBuffer = await file.arrayBuffer();
                 const buffer = Buffer.from(arrayBuffer);
                 const blob = arrayBufferToBlob(buffer)
                 text = await extractTextFromPDF(blob);
+                chunksResult = await createAndStoreChunks(text, file, collection)
+            } else if (file.type === 'text/csv') {
+                console.log("---- extract")
+                chunksResult = await extractDataFromCSV(file, collection);
+                text = "processed";
             } else {
-                text = await file.text();
+                text = "";
             }
 
             if (!text.trim()) {
@@ -42,7 +48,7 @@ export async function POST(req: Request) {
                 continue;
             }
 
-            const chunksResult = await createAndStoreChunks(text, file, collection)
+            
             results.push(...chunksResult);
         }
 
