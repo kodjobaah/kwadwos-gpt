@@ -1,144 +1,127 @@
-# Kwadwo's GPT
+# 🧠 KwadwoGPT — A Playground for Generative AI Workflows
 
-Kwadwo's GPT is an AI-powered chatbot application leveraging **Retrieval-Augmented Generation (RAG)** to enhance responses with external knowledge. The application is built using **Next.js**, **Astra DB**, and **Prisma ORM**, and it is deployed on **Vercel**.
+**KwadwoGPT** is a full-stack GenAI app built to explore real-world applications of large language models — from intelligent travel assistants to self-updating knowledge systems. It combines cutting-edge techniques like RAG (Retrieval-Augmented Generation), agentic prompt workflows, persona injection, and LLM-orchestrated web scraping — all in a scalable, modular architecture.
 
-🔗 **Live Demo**: [kwadwos-gpt.vercel.app](https://kwadwos-gpt.vercel.app)
-
-## Features
-
-- **AI Chatbot with RAG**: Uses Astra DB as a vector database for better context-aware responses.
-- **Fast & Scalable**: Powered by Next.js with efficient database interactions via Prisma.
-- **Modern UI**: Built with Tailwind CSS for a responsive and clean design.
-- **Cloud-Hosted**: Deployed seamlessly on Vercel.
-
-## 🚀 Getting Started
-
-To set up and run the project locally, follow these steps:
-
-### **1. Clone the repository**
-```bash
-git clone https://github.com/kodjobaah/kwadwos-gpt.git
-cd kwadwos-gpt
-```
-
-### **2. Install dependencies**
-```bash
-# Using npm
-npm install
-
-# Using yarn
-yarn install
-
-# Using pnpm
-pnpm install
-
-# Using bun
-bun install
-```
-
-### **3. Configure environment variables**
-Create a `.env` file in the root directory and add the necessary environment variables:
-
-```plaintext
-# OpenAI API Key
-OPENAI_API_KEY=your_openai_api_key
-
-# Astra DB connection details
-ASTRA_DB_APPLICATION_TOKEN=your_astra_db_token
-ASTRA_DB_API_ENDPOINT=your_astra_db_api_endpoint
-ASTRA_DB_KEYSPACE=your_keyspace
-
-# Prisma database URL (if applicable)
-DATABASE_URL=your_database_url
-```
-
-Refer to `.env.example` for more details.
-
-### **4. Run the development server**
-```bash
-# Using npm
-npm run dev
-
-# Using yarn
-yarn dev
-
-# Using pnpm
-pnpm dev
-
-# Using bun
-bun dev
-```
-The application will be accessible at **[http://localhost:3000](http://localhost:3000)**.
+> **Live Demo**: [kwadwos-gpt.vercel.app](https://kwadwos-gpt.vercel.app)  
+> **Source Code**: [GitHub Repository](https://github.com/kodjobaah/kwadwos-gpt)
 
 ---
 
-## 📁 Project Structure
+## 🌍 1. AI-Powered Tour Planner
 
-```
-kwadwos-gpt/
-│── app/             # Next.js App directory
-│── components/      # UI components
-│── lib/             # Utility functions
-│── prisma/          # Prisma ORM schema and database setup
-│── public/          # Static assets
-│── styles/          # Global and component styles
-│── pages/api/       # API routes for backend interactions
-│── scripts/         # Scripts for data ingestion, maintenance
-└── README.md        # Project documentation
-```
+This feature allows users to:
+- 🔍 Search for real cities and countries
+- 📋 Generate structured, one-day family tours using GPT-3.5
+- 🧾 Summarize points of interest using prompt templating
+- 🖼️ View panoramic images of each location (via OpenAI image generation)
+- 💾 Store and search tours using **PostgreSQL + Prisma**
+
+The system validates inputs (e.g. city existence, match with country) and generates structured JSON responses to deliver a clear, consistent tour experience.
 
 ---
 
-## ⚙️ Technologies Used
+## 📄 2. LLM-Orchestrated RAG System (Documents & Prompts)
 
-| Technology   | Purpose |
-|-------------|---------|
-| **Next.js** | React framework for SSR & SSG |
-| **Astra DB** | Vector database for RAG-based retrieval |
-| **Prisma ORM** | Database schema and query builder |
-| **OpenAI API** | AI model integration for chatbot responses |
-| **Tailwind CSS** | Modern UI styling |
-| **Vercel** | Cloud deployment |
+KwadwoGPT supports an advanced RAG workflow that allows users to:
+- 📁 Upload documents, which are summarized using an LLM
+- 📦 Store embeddings in **AstraDB (Vector DB)**
+- 🔍 Perform semantic search using **LLM-generated vector queries**
+- 💬 Use a separate LLM to answer the user’s question based on retrieved context
 
----
-
-## 📡 **How Astra DB is Used for RAG**
-The application uses **Astra DB** as a **vector database** to store and retrieve relevant text chunks for **Retrieval-Augmented Generation (RAG)**. Instead of solely relying on OpenAI’s API, the chatbot retrieves **contextually relevant** documents from Astra DB before generating responses.
-
-### **RAG Workflow**
-1. **Data Ingestion**: Documents are embedded into vector representations and stored in Astra DB.
-2. **Query Execution**: When a user asks a question, the app retrieves similar vectors from Astra DB.
-3. **Context Injection**: The retrieved text is combined with the user query.
-4. **AI Response Generation**: OpenAI’s GPT model uses the enhanced context to generate an answer.
+This multi-step flow allows:
+- ✨ Intelligent prompt rewriting for precision search
+- 🔄 Use of **multi-model pipelines**
+- ⚙️ Extendability with fine-tuned LLMs (e.g. via LoRA/QLoRA)
 
 ---
 
-## 🤝 Contributing
+## 🌐 3. LLM-Augmented Web Scraper (Experimental)
 
-Contributions are welcome! Follow these steps:
+The app includes a prototype for ingesting **live web data** using LLM + automation:
 
-1. Fork the repository.
-2. Create a new branch: `git checkout -b feature/your-feature`
-3. Commit your changes: `git commit -m "Add new feature"`
-4. Push the changes: `git push origin feature/your-feature`
-5. Open a pull request.
+- 🌍 **Scraping** via Puppeteer + Cheerio to extract content from any site
+- 🧼 **Cleaning** using stopword filters to optimize data for summarization/embedding
+- 🧠 **(Optional) LLM summarization** to compress page content before storage
+- 📦 Designed for embedding into AstraDB for future semantic search
 
----
-
-## 📝 License
-
-This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
+This is the foundation of a self-updating knowledge base — ideal for research agents, internal tooling, or real-time domain learning.
 
 ---
 
-## 🙌 Acknowledgements
+## 🎭 4. User-Defined Personas (Coming Soon)
 
-- **[OpenAI](https://openai.com/)** for their advanced AI models.
-- **[Astra DB](https://www.datastax.com/products/datastax-astra/)** for providing a scalable vector database.
-- **[Vercel](https://vercel.com/)** for seamless Next.js hosting.
-- **[Prisma](https://www.prisma.io/)** for simplifying database management.
+Users will be able to define **custom LLM personas** including:
+
+- 🧑 Role/identity (Legal Advisor, Mentor, Tour Guide, etc.)
+- ✍️ Tone and communication style
+- 📏 Behavior rules (e.g. avoid jokes, stay concise, cite sources)
+
+These personas will dynamically generate system prompts that shape the model’s responses. The summarizer and tour modules already use static persona logic — this system will make it customizable and reusable.
 
 ---
 
-🚀 **Enjoy using Kwadwo's GPT!**
+## 🧠 Memory Architecture
 
+KwadwoGPT uses a **hybrid memory model** for intelligent context management:
+
+| Memory Type      | Storage Layer       | Use Case                               |
+|------------------|---------------------|----------------------------------------|
+| Short-Term       | Session memory      | Live chat context, prompt chaining     |
+| Persistent       | PostgreSQL          | Stored chats, tours, user session data |
+| Semantic Memory  | AstraDB (Vectors)   | Long-term knowledge + document recall  |
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer              | Technology                                 |
+|--------------------|--------------------------------------------|
+| Framework          | **Next.js** (App Router, Server Actions)   |
+| Frontend UI        | React, TailwindCSS                         |
+| Backend Logic      | Server Actions, API Routes                 |
+| LLM APIs           | OpenAI, Groq (LLaMA 3), HuggingFace        |
+| Vector DB          | AstraDB (Cassandra + Vector Search)        |
+| Relational DB      | PostgreSQL + Prisma ORM                    |
+| Browser Automation | Puppeteer, Cheerio                         |
+| Deployment         | Vercel                                     |
+
+---
+
+## 🔮 Roadmap
+
+- [ ] User persona editor + system prompt builder
+- [ ] Tour plan export (PDF/shareable link)
+- [ ] Agent-based task routing and tool chaining
+- [ ] Voice input for natural query support
+- [ ] Document embedding fine-tuning (LoRA/QLoRA-ready)
+- [ ] End-to-end ingestion from web to vector storage
+
+---
+
+## 🧾 Project Motivation
+
+This project was built to move beyond theory and actually apply GenAI tools in production-ready workflows. It reflects a deep interest in:
+
+- Prompt engineering & agentic design
+- Retrieval pipelines and knowledge graphs
+- Multi-modal GenAI applications
+- Practical UX for non-technical users
+
+It demonstrates what it takes to ship AI products — not just call APIs.
+
+---
+
+## 🙌 Inspiration
+
+- OpenAI API Docs
+- Groq & LLaMA 3 models
+- LangChain & AutoGPT concepts
+- AstraDB + Vector Search
+- Real-world use cases: travel, legal, Q&A, document workflows
+
+---
+
+## 💡 Feedback Welcome
+
+This is an active project.  
+Feel free to open an issue, explore the code, or reach out directly if you're curious about the architecture or the ideas behind it.
