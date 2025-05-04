@@ -121,6 +121,22 @@ It demonstrates what it takes to ship AI products — not just call APIs.
 
 ---
 
+## 🧪 Experimental: LLM Training & Fine-Tuning
+
+In parallel to KwadwoGPT, I've been using [Google Colab](https://drive.google.com/drive/folders/13OzuaaQAK_tmRMBSixATCVxj7yD_Sckr?usp=sharing) to experiment with:
+
+- Training tokenizers and small LLMs
+- LoRA and PEFT (parameter-efficient fine-tuning)
+- Prompt tuning and generation quality tests
+- Inference benchmarking and latency profiling
+
+This exploration supports the app’s future direction — including **custom persona behavior**, **fine-tuned summarizers**, and **task-specific models** that could be deployed locally or via a hosted solution.
+
+> 📂 [View the Colab Workspace](https://drive.google.com/drive/folders/13OzuaaQAK_tmRMBSixATCVxj7yD_Sckr?usp=sharing)
+
+---
+
+
 ## 💡 Feedback Welcome
 
 This is an active project.  
