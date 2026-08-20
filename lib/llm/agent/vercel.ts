@@ -38,7 +38,7 @@ export const createVectorSearchParams = async (prompt):  Promise<GroqResponse>  
     Can you just include the search terms in the response.
     `;
     const scrapeWebPageLLM = await generateText({
-        model: groq('llama-3.1-8b-instant'),
+        model: groq('openai/gpt-oss-20b'),
         prompt: prompt,
         system: system,
         experimental_telemetry: {
@@ -63,7 +63,7 @@ export const scrapeWebPage = async (url): Promise<GroqResponse> => {
     const prompt = `Please scrape the content of ${url} and provide a structured JSON response of all the titles and links on the page. After scraping, focus on the most important and relevant information.`;
 
     const scrapeWebPageLLM = await generateText({
-        model: groq('llama-3.1-8b-instant'),
+        model: groq('openai/gpt-oss-20b'),
         prompt: prompt,
         system: system,
         experimental_telemetry: {

@@ -27,7 +27,7 @@ export const invokeLLMSummarization = async (prompt) => {
   Conclude your notes with [End of Notes, Message #X] to indicate completion, where "X" represents the total number of messages that I have sent. In other words, include a message counter where you start with #1 and add 1 to the message counter every time I send a message.
   `
   const response = await generateText({
-    model: groq('llama-3.1-8b-instant'),
+    model: groq('openai/gpt-oss-20b'),
     prompt: prompt,
     system: system,
     maxSteps: 5,
