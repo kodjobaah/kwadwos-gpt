@@ -10,7 +10,6 @@ export const DocumentSelection = ({ selectedDoc, setSelectedDoc, isLoadingDocs, 
                     className="select select-bordered w-full mt-2"
                     value={selectedDoc}
                     onChange={(e) => {
-                        console.log('Selected Document:', e.target.value);
                         setSelectedDoc(e.target.value);
                     }}
                     disabled={isLoadingDocs || !documents || documents.collections.length === 0}

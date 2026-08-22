@@ -28,12 +28,24 @@ export default function Editor({ doc, onContentChange }: EditorProps) {
   const config = useMemo<any>(
     () => ({
       height: 400,
+      controls: {
+          scrapeData: {
+          text: 'Perform Action', // Text to show on the button
+          tooltip: 'Insert text block',
+          iconURL: 'https://flaticon.com', // Icon image
+          exec: (editor: any) => {
+            // Action to take when clicked
+            editor.s.insertHTML('<strong>Hello World! 👋</strong>');
+          }
+        }
+      },
       buttons: [
         'source',
         '|',
         'bold',
         'italic',
         'underline',
+        'scrapeData',
         '|',
         'ul',
         'ol',

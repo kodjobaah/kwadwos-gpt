@@ -11,7 +11,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
         const body = (await req.json()) as LLMRequestBody;
         const { prompt, context, selectedDoc } = body;
-        console.log(context)
+        console.log("here is the prompt, context, and selectedDoc:", prompt, context, selectedDoc);
 
         const data = [];
         if (context) {

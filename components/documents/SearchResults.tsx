@@ -10,12 +10,12 @@ export const SearchResults = ({ results, onSelectedItems }) => {
     }));
 
 
-    const items = results.documents.filter((_, index) => selectedItems[index])
+    const items = results.documents.filter((_: any, index: string | number) => selectedItems[index])
     onSelectedItems(items);
   };
 
   const getSelectedResults = () => {
-    return results.documents.filter((_, index) => selectedItems[index]);
+    return results.documents.filter((_: any, index: string | number) => selectedItems[index]);
 
   };
 

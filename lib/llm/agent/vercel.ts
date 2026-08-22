@@ -15,7 +15,7 @@ import { pipeline } from '@huggingface/transformers';
 
 export const performRagSearch = async (prompt, system): Promise<GroqResponse> => {
     const { text } = await generateText({
-        model: groq('llama-3.3-70b-versatile'),
+        model: groq('openai/gpt-oss-20b'),
         prompt: prompt,
         system: system,
         maxSteps: 5,
@@ -119,3 +119,4 @@ export const scrapeWebPage = async (url): Promise<GroqResponse> => {
 
     return { content: scrapeWebPageLLM.text, usage: { ...scrapeWebPageLLM.usage } };
 }
+

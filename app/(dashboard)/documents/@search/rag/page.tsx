@@ -34,7 +34,6 @@ export default function RagResultsPage() {
         if (!res || res.length === 0) {
           setHasMore(false);
         } else {
-          console.log('updd', (typeof res));
           setRagSearchResults(res);
         }
 

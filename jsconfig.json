@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
-    "jsx": "react",
+    "jsx": "preserve",
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
     }
   }
 }
+
